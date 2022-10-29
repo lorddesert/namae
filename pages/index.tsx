@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { Suspense } from 'react'
 import Noteapp from '../components/Noteapp'
 import styles from '../styles/Home.module.css'
 
@@ -11,7 +12,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+    <Suspense fallback={"Loading........."}>
       <Noteapp />
+    </Suspense>
     </div>
   )
 }
