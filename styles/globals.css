@@ -33,12 +33,6 @@ a {
   }
 }
 
-form {
-  border: 1.5px solid gray;
-  border-radius: 5px;
-  padding: 1em;
-}
-
 label {
   display: grid;
   gap: 1rem;
