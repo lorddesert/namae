@@ -8,6 +8,7 @@ type Data = {
 }
 
 export type TypeNote = {
+  id: string,
   title: string,
   body: string
 }
