@@ -1,8 +1,10 @@
-// import { trpc } from '../utils/trpc';
+import { trpc } from '../utils/trpc';
 // import { Note } from '../pages/api/create-notes';
 import Button from './Button';
 
 export default function Noteapp() {
+  const noteMutation = trpc.createNote.useMutation()
+
 
   async function createNote(e: any) {
     e.preventDefault()
@@ -13,10 +15,11 @@ export default function Noteapp() {
 
     console.log(title, body)
     // setNotes(response)
+    noteMutation.mutate({ title, body })
   }
 
   return <>
-    <form onSubmit={createNote} className=' text-slate-200 border border-slate-700 p-5 rounded-md mt-60'>
+    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-700 p-5 rounded-md mt-60 mx-auto'>
       <section>
         <label htmlFor='note-title'>
           Note title
