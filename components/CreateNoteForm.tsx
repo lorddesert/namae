@@ -16,7 +16,7 @@ export default function Noteapp() {
   }
 
   return <>
-    <form onSubmit={createNote} className=' border border-gray-500 p-5 rounded-md mt-60'>
+    <form onSubmit={createNote} className=' text-slate-200 border border-slate-700 p-5 rounded-md mt-60'>
       <section>
         <label htmlFor='note-title'>
           Note title
