@@ -16,7 +16,7 @@ export default function Noteapp() {
   }
 
   return <>
-    <form onSubmit={createNote} className=' mt-60'>
+    <form onSubmit={createNote} className=' border border-gray-500 p-5 rounded-md mt-60'>
       <section>
         <label htmlFor='note-title'>
           Note title
@@ -29,7 +29,7 @@ export default function Noteapp() {
           <textarea name='note-body' id='note-body' cols={30} rows={10} />
         </label>
       </section>
-      <Button label='Create note' onClick={createNote} />
+      <Button className='w-full' label='Create note' onClick={createNote} />
     </form>
   </>
 }
