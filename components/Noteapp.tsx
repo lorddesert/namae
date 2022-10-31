@@ -3,15 +3,15 @@ import Notes from './Notes';
 
 export default function Noteapp() {
 
-  async function createNote(e: any) {
-    e.preventDefault()
+  // async function createNote(e: any) {
+  //   e.preventDefault()
 
-    const [titleInput, bodyInput] = e.target.form
-    const title: string = titleInput.value
-    const body: string = bodyInput.value
+  //   const [titleInput, bodyInput] = e.target.form
+  //   const title: string = titleInput.value
+  //   const body: string = bodyInput.value
 
-    console.log(title, body)
-  }
+  //   console.log(title, body)
+  // }
 
   return <>
     <CreteNoteForm />
