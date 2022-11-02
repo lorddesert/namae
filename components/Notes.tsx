@@ -1,17 +1,18 @@
 import { TypeNote } from "../pages/api/create-notes"
-import { trpc } from "../utils/trpc"
 import Note from "./Note"
+import { useGetNotes } from "./hooks/getNotes"
+
 
 export default function Notes() {
+  const {notes, isLoading} = useGetNotes()
+  
+  if (isLoading) return <h1>Loading...</h1>
 
-  const allNotes = trpc.getNotes.useQuery()
-  const notes: TypeNote[] = allNotes.data?.notes
-
-  if (!notes) return <h1>Loading...</h1>
+  if (!notes.length) return <h1>No notes found</h1>
 
   return <>
     <ul className="grid grid-cols-3 ">
-      {notes.map(({ id, title, body }) => <li key={`note-${id}`}>
+      {notes.map(({ id, title, body }: TypeNote) => <li key={`note-${id}`}>
         <Note {...{ id, title, body }} />
       </li>)}
     </ul>

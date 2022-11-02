@@ -12,6 +12,7 @@ export type TypeNote = {
   title: string,
   body: string
 }
+
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>

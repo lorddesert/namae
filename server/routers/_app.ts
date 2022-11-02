@@ -1,11 +1,12 @@
+import { randomUUID } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import { z } from 'zod';
 import { TypeNote } from '../../pages/api/create-notes';
 import { publicProcedure, router } from '../trpc';
-import { observable } from '@trpc/server/observable';
-import { EventEmitter } from 'events'
+// import { observable } from '@trpc/server/observable';
+// import { EventEmitter } from 'events'
 
-const ee = new EventEmitter()
+// const ee = new EventEmitter()
 
 
 export const appRouter = router({
@@ -20,8 +21,8 @@ export const appRouter = router({
   createNote: publicProcedure
     .input(
       z.object({
-        title: z.string(),
-        body: z.string()
+        title: z.string().trim().min(1),
+        body: z.string().trim().min(1)
       })
     )
     .mutation((req) => {
@@ -30,7 +31,7 @@ export const appRouter = router({
       const notes = JSON.parse(readFileSync('./notes.json').toString())
 
       const newNote: TypeNote = {
-        id: globalThis.crypto.randomUUID(),
+        id: randomUUID(),
         title,
         body
       }
@@ -41,20 +42,6 @@ export const appRouter = router({
 
       return response
     }),
-  onAdd: publicProcedure.subscription(() => {
-    return observable((emit) => {
-      const onAdd = (data: TypeNote) => {
-        emit.next(data)
-      }
-
-      ee.on('add', onAdd)
-
-
-      return () => {
-        ee.off('add', onAdd)
-      }
-    })
-  })
 
 });
 
