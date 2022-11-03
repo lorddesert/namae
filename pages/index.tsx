@@ -12,6 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <h1 className='my-2 text-2xl'>Note app made in Nextjs and tRPC ❤️</h1>
       <CreateNoteForm />
       <Notes />
     </>
