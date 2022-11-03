@@ -36,17 +36,17 @@ export default function CreateNoteForm() {
   }
 
   return <>
-    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-60 mx-auto'>
+    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-10 mx-auto'>
       <section>
         <label htmlFor='note-title'>
           Note title
-          <input type='text' name='note-title' required/>
+          <input type='text' name='note-title' required placeholder='A nice title...'/>
         </label>
       </section>
       <section>
         <label htmlFor='note-body'>
           Content
-          <textarea name='note-body' id='note-body' cols={30} rows={10} required />
+          <textarea placeholder='Dear diary...' name='note-body' id='note-body' cols={30} rows={10} required className='p-1' />
         </label>
       </section>
       <Button type="submit" className='w-full' label='Create note' />
