@@ -36,7 +36,7 @@ export default function CreateNoteForm() {
   }
 
   return <>
-    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-700 p-5 rounded-md mt-60 mx-auto'>
+    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-60 mx-auto'>
       <section>
         <label htmlFor='note-title'>
           Note title

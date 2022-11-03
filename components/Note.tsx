@@ -10,7 +10,7 @@ function Tag() {
 }
 
 export default function Note({ title, body }: TypeNote) {
-  return <article className="p-2 m-2 min-w-[200px] max-w-[250px] border rounded-md aspect-video text-slate-200 border-slate-700">
+  return <article className="p-2 m-2 min-w-[200px] max-w-[250px] border rounded-md aspect-video text-slate-200 border-slate-900">
     <header className="w-full mb-4">
       <h4 className="text-2xl ">{title}</h4>
       <section>
