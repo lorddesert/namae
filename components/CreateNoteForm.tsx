@@ -1,13 +1,15 @@
 import { trpc } from '../utils/trpc';
 import Button from './Button';
 import { notesAtom } from './hooks/getNotes';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai';
 import { TypeNote } from '../pages/api/create-notes';
+import Tokenfield from './Tokenfield';
 
 export default function CreateNoteForm() {
   const noteMutation = trpc.createNote.useMutation()
   const [_, setNotes] = useAtom(notesAtom)
+  const [tags, setTags] = useState([])
 
   useEffect(() => {
     console.log('new data: ', noteMutation.data)
@@ -16,7 +18,7 @@ export default function CreateNoteForm() {
     const newNotes: TypeNote[] = noteMutation.data
 
     if (!noteMutation.isLoading)
-    //@ts-ignore
+      //@ts-ignore
       setNotes(newNotes)
 
   }, [noteMutation.isLoading, noteMutation.data, setNotes])
@@ -29,7 +31,7 @@ export default function CreateNoteForm() {
     const title: string = titleInput.value
     const body: string = bodyInput.value
 
-    noteMutation.mutate({ title, body })
+    noteMutation.mutate({ title, body, tags: [] })
 
     form.reset()
     form.elements[0].focus()
@@ -40,7 +42,7 @@ export default function CreateNoteForm() {
       <section>
         <label htmlFor='note-title'>
           Note title
-          <input type='text' name='note-title' required placeholder='A nice title...'/>
+          <input type='text' name='note-title' required placeholder='A nice title...' />
         </label>
       </section>
       <section>
@@ -49,7 +51,12 @@ export default function CreateNoteForm() {
           <textarea placeholder='Dear diary...' name='note-body' id='note-body' cols={30} rows={10} required className='p-1' />
         </label>
       </section>
-      <Button type="submit" className='w-full' label='Create note' />
+      <section>
+        <label htmlFor='note-tags'>
+          <Tokenfield setFormTags={setTags} />
+        </label>
+      </section>
+      <Button type='submit' className='w-full' label='Create note' />
     </form>
   </>
 }
