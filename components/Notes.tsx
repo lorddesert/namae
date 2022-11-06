@@ -15,8 +15,8 @@ export default function Notes() {
 
   return <>
     <ul className="grid grid-cols-3 ">
-      {notes.map(({ id, title, body }: TypeNote) => <li key={`note-${id}`}>
-        <Note {...{ id, title, body }} />
+      {notes.map(({ id, ...note }: TypeNote) => <li key={`note-${id}`}>
+        <Note {...{ id, ...note }} />
       </li>)}
     </ul>
   </>
