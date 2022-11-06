@@ -4,25 +4,9 @@ import { trpc } from "../utils/trpc";
 import { notesAtom } from "./hooks/getNotes";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+import Tags from "./Tags";
 
-function Tag() {
-  return <li>
-    <button className={`px-1 text-indigo-500 rounded-sm text-xs text-bold w-fit bg-slate-900`}>
-      super large tag
-    </button>
-  </li>
-
-}
-
-function Tags() {
-  return <section>
-    <ul className="flex flex-wrap gap-1">
-      {Array(4).fill(null).map((_, i) => <Tag key={`item-${i}`} />)}
-    </ul>
-  </section>
-}
-
-export default function Note({ id, title, body }: TypeNote) {
+export default function Note({ id, title, body, tags }: TypeNote) {
   const noteMutation = trpc.deleteNote.useMutation()
 
   const [_, setNotes] = useAtom(notesAtom)
@@ -45,7 +29,7 @@ export default function Note({ id, title, body }: TypeNote) {
   return <article className="p-2 m-2 mx-1 pt-1 min-w-[200px] max-w-[250px] border rounded-md aspect-video text-slate-200 border-slate-900 flex flex-col gap-2">
     <header className="w-full capitalize">
       <h4 className="text-2xl ">{title}</h4>
-      {/* <Tags /> */}
+      <Tags tags={tags} />
     </header>
     <main>
       <p className="text-lg ">{body}</p>
