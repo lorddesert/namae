@@ -3,16 +3,23 @@ import { readFileSync, writeFileSync } from 'fs';
 import { z } from 'zod';
 import { TypeNote } from '../../pages/api/create-notes';
 import { publicProcedure, router } from '../trpc';
-// import { observable } from '@trpc/server/observable';
-// import { EventEmitter } from 'events'
 
-// const ee = new EventEmitter()
+function getNotesJSON() {
+  const data: TypeNote[] = JSON.parse(readFileSync('./notes.json').toString())
+  
+  return data
+}
 
+function getTagsJSON() {
+  const data: string[] = JSON.parse(readFileSync('./tags.json').toString())
+  
+  return data
+}
 
 export const appRouter = router({
   getNotes: publicProcedure
     .query(() => {
-      const data = JSON.parse(readFileSync('./notes.json').toString())
+      const data = getNotesJSON()
 
       return {
         notes: data
@@ -22,27 +29,57 @@ export const appRouter = router({
     .input(
       z.object({
         title: z.string().trim().min(1),
-        body: z.string().trim().min(1)
+        body: z.string().trim().min(1),
+        tags: z.array(
+          z.string()
+          )
       })
     )
     .mutation((req) => {
       const { input } = req
-      const { title, body } = input
-      const notes = JSON.parse(readFileSync('./notes.json').toString())
+      const { title, body, tags: noteTags } = input
+      const notes = getNotesJSON()
+      const allTags = getTagsJSON()
+      const newTags: string[] = []
+
+      noteTags.forEach(tag => {
+        if (!allTags.includes(tag))
+          newTags.push(tag)
+      })
+
+      newTags.concat(allTags)
 
       const newNote: TypeNote = {
         id: randomUUID(),
         title,
-        body
+        body,
+        tags: newTags
       }
 
       const response = [...notes, newNote]
 
       writeFileSync('./notes.json', JSON.stringify(response))
+      writeFileSync('./tags.json', JSON.stringify(newTags))
 
       return response
     }),
+  deleteNote: publicProcedure
+  .input(
+    z.object({
+      id: z.string()
+    })
+  )
+  .mutation((req) => {
+    const { input } = req
+    const { id } = input
+    const notes = getNotesJSON()
 
+    const filteredNotes = notes.filter(note => note.id !== id)
+
+    writeFileSync('./notes.json', JSON.stringify(filteredNotes))
+
+    return filteredNotes
+  })
 });
 
 // export type definition of API
