@@ -1,18 +1,21 @@
 import { trpc } from '../utils/trpc';
-import Button from './Button';
 import { notesAtom } from './hooks/getNotes';
 import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai';
 import { TypeNote } from '../pages/api/create-notes';
+
+// Components
+import Button from './Button';
 import Tokenfield from './Tokenfield';
 
 export default function CreateNoteForm() {
+  // State
   const noteMutation = trpc.createNote.useMutation()
   const [_, setNotes] = useAtom(notesAtom)
   const [tags, setTags] = useState([])
 
+  // Effects
   useEffect(() => {
-    console.log('new data: ', noteMutation.data)
     if (!noteMutation.data) return
 
     const newNotes: TypeNote[] = noteMutation.data
@@ -23,22 +26,44 @@ export default function CreateNoteForm() {
 
   }, [noteMutation.isLoading, noteMutation.data, setNotes])
 
+  useEffect(() => {
+    const form = document.querySelector('#create-note-form')
+    if (!form) return
+
+
+    form.addEventListener('keydown', watchForEnter)
+    return () => {
+      form.removeEventListener('keydown', watchForEnter)
+    }
+  }, [])
+
+  // Actions
   async function createNote(e: any) {
     e.preventDefault()
+    e.stopPropagation()
 
     const form = e.target
     const [titleInput, bodyInput] = form
     const title: string = titleInput.value
     const body: string = bodyInput.value
+    noteMutation.mutate({ title, body, tags })
 
-    noteMutation.mutate({ title, body, tags: [] })
-
+    setTags([])
     form.reset()
     form.elements[0].focus()
   }
 
+  function watchForEnter(event: any) {
+    const addTagBtn: HTMLButtonElement | null = document.querySelector('button[name=add-tag-btn]')
+    if (event.target.name === 'tag-input' && event.key === 'Enter') {
+      if (!addTagBtn) return
+      event.preventDefault()
+      addTagBtn.click()
+    }
+  }
+
   return <>
-    <form onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-10 mx-auto'>
+    <form id='create-note-form' onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-10 mx-auto'>
       <section>
         <label htmlFor='note-title'>
           Note title
@@ -51,11 +76,7 @@ export default function CreateNoteForm() {
           <textarea placeholder='Dear diary...' name='note-body' id='note-body' cols={30} rows={10} required className='p-1' />
         </label>
       </section>
-      <section>
-        <label htmlFor='note-tags'>
-          <Tokenfield setFormTags={setTags} />
-        </label>
-      </section>
+      <Tokenfield tags={tags} setTags={setTags} />
       <Button type='submit' className='w-full' label='Create note' />
     </form>
   </>
