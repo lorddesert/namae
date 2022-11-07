@@ -6,13 +6,13 @@ import { publicProcedure, router } from '../trpc';
 
 function getNotesJSON() {
   const data: TypeNote[] = JSON.parse(readFileSync('./notes.json').toString())
-  
+
   return data
 }
 
 function getTagsJSON() {
   const data: string[] = JSON.parse(readFileSync('./tags.json').toString())
-  
+
   return data
 }
 
@@ -25,6 +25,15 @@ export const appRouter = router({
         notes: data
       };
     }),
+  getNoteById: publicProcedure
+    .input(z.string())
+    .query((req) => {
+      const notes = getNotesJSON()
+      const { input } = req
+      const selectedNote = notes.find(note =>  note.id  === input)
+
+      return selectedNote
+    }),
   createNote: publicProcedure
     .input(
       z.object({
@@ -32,7 +41,7 @@ export const appRouter = router({
         body: z.string().trim().min(1),
         tags: z.array(
           z.string()
-          )
+        )
       })
     )
     .mutation((req) => {
@@ -64,22 +73,22 @@ export const appRouter = router({
       return response
     }),
   deleteNote: publicProcedure
-  .input(
-    z.object({
-      id: z.string()
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .mutation((req) => {
+      const { input } = req
+      const { id } = input
+      const notes = getNotesJSON()
+
+      const filteredNotes = notes.filter(note => note.id !== id)
+
+      writeFileSync('./notes.json', JSON.stringify(filteredNotes))
+
+      return filteredNotes
     })
-  )
-  .mutation((req) => {
-    const { input } = req
-    const { id } = input
-    const notes = getNotesJSON()
-
-    const filteredNotes = notes.filter(note => note.id !== id)
-
-    writeFileSync('./notes.json', JSON.stringify(filteredNotes))
-
-    return filteredNotes
-  })
 });
 
 // export type definition of API
