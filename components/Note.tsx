@@ -5,6 +5,7 @@ import { notesAtom } from "./hooks/getNotes";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import Tags from "./Tags";
+import Link from "next/link";
 
 export default function Note({ id, title, body, tags }: TypeNote) {
   const noteMutation = trpc.deleteNote.useMutation()
@@ -15,7 +16,6 @@ export default function Note({ id, title, body, tags }: TypeNote) {
     noteMutation.mutate({ id })
   }
   useEffect(() => {
-    console.log('new data: ', noteMutation.data)
     if (!noteMutation.data) return
 
     const newNotes: TypeNote[] = noteMutation.data
@@ -36,10 +36,14 @@ export default function Note({ id, title, body, tags }: TypeNote) {
     </main>
     <footer className="flex">
       <Button
+        name="delete-note-button"
         label="Delete"
         className="flex-1 p-1 text-sm border-none bg-rose-800 text-slate-200 hover:bg-rose-600 focus:bg-rose-600"
         onClick={deleteNote}
       />
+      <Link href={`/notes/${id}`}>
+        Details
+      </Link>
     </footer>
   </article>
 }
