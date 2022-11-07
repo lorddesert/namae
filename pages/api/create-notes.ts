@@ -25,7 +25,6 @@ export default function handler(
 
      notes = [...allNotes]
   } catch (e) {
-    console.log(e)
     notes = []
   }
     const newNote = JSON.parse(req.body)
