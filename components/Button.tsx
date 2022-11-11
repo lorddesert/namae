@@ -1,12 +1,13 @@
-type ButtonProps = {
-  label: string,
+interface ButtonProps {
+  label?: string,
   onClick?: any,
   className?: string,
   type?: "submit" | "reset" | "button",
-  name: string
+  name: string,
+  children?: any
 }
 
-export default function Button({ type, className, label, onClick, name }: ButtonProps) {
+export default function Button({ type, className, label, onClick, name, children }: ButtonProps) {
   return <button
     name={name}
     onClick={onClick}
@@ -14,5 +15,6 @@ export default function Button({ type, className, label, onClick, name }: Button
     type={`${type || 'button'}`}
   >
     {label}
+    {children}
   </button>
 }
