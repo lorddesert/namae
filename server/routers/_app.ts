@@ -25,12 +25,24 @@ export const appRouter = router({
         notes: data
       };
     }),
+  getNotesByTag: publicProcedure
+    .input(z.string())
+    .query((req) => {
+      const { input: selectedTag } = req
+      const notes = getNotesJSON()
+
+      console.log(selectedTag)
+
+      const filteredNotes = notes.filter(note => note.tags.includes(selectedTag))
+
+      return filteredNotes
+    }),
   getNoteById: publicProcedure
     .input(z.string())
     .query((req) => {
       const notes = getNotesJSON()
       const { input } = req
-      const selectedNote = notes.find(note =>  note.id  === input)
+      const selectedNote = notes.find(note => note.id === input)
 
       return selectedNote
     }),
