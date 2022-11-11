@@ -63,7 +63,7 @@ export default function CreateNoteForm() {
   }
 
   return <>
-    <form id='create-note-form' onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-10 mx-auto'>
+    <form id='create-note-form' onSubmit={createNote} className=' max-w-[350px] text-slate-200 border border-slate-900 p-5 rounded-md mt-5 mx-auto'>
       <section>
         <label htmlFor='note-title'>
           Note title
@@ -73,11 +73,11 @@ export default function CreateNoteForm() {
       <section>
         <label htmlFor='note-body'>
           Content
-          <textarea placeholder='Dear diary...' name='note-body' id='note-body' cols={30} rows={10} required className='p-1' />
+          <textarea placeholder='Dear diary...' name='note-body' id='note-body' cols={3} rows={5} required className='p-1' />
         </label>
       </section>
       <Tokenfield tags={tags} setTags={setTags} />
-      <Button type='submit' className='w-full' label='Create note' />
+      <Button name='Create note button' type='submit' className='w-full' label='Create note' />
     </form>
   </>
 }
