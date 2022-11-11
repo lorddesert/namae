@@ -7,7 +7,12 @@ import { useEffect } from "react";
 import Tags from "./Tags";
 import Link from "next/link";
 
-export default function Note({ id, title, body, tags }: TypeNote) {
+interface Note extends TypeNote {
+  className?: string,
+  hideButtons?: boolean
+}
+
+export default function Note({ hideButtons = false, id, title, body, tags, className }: Note) {
   const noteMutation = trpc.deleteNote.useMutation()
 
   const [_, setNotes] = useAtom(notesAtom)
@@ -26,24 +31,27 @@ export default function Note({ id, title, body, tags }: TypeNote) {
 
   }, [noteMutation.isLoading, noteMutation.data, setNotes])
 
-  return <article className="p-2 m-2 mx-1 pt-1 min-w-[200px] max-w-[250px] border rounded-md aspect-video text-slate-200 border-slate-900 flex flex-col gap-2">
-    <header className="w-full capitalize">
-      <h4 className="text-2xl ">{title}</h4>
-      <Tags tags={tags} />
-    </header>
-    <main>
-      <p className="text-lg ">{body}</p>
-    </main>
-    <footer className="flex">
-      <Button
-        name="delete-note-button"
-        label="Delete"
-        className="flex-1 p-1 text-sm border-none bg-rose-800 text-slate-200 hover:bg-rose-600 focus:bg-rose-600"
-        onClick={deleteNote}
-      />
-      <Link href={`/notes/${id}`}>
-        Details
-      </Link>
-    </footer>
-  </article>
+  return <Link href={`/notes/${id}`} className="w-full">
+    <article className={` ${className} p-2 m-2 mx-1 pt-1 min-w-[200px] max-w-[250px] border rounded-md aspect-video text-slate-200 border-slate-900 flex flex-col justify-between gap-3 hover:border-slate-800 hover:bg-slate-900 transition-colors`}>
+      <header className="w-full capitalize">
+        <h4 className="text-lg ">{title}</h4>
+        <Tags tags={tags} />
+      </header>
+      <main>
+        <p className="overflow-hidden text-sm text-ellipsis whitespace-nowrap">{body}</p>
+      </main>
+      {!hideButtons &&
+        <footer className="flex flex-col gap-2">
+          {/* <Button name="go-to-details" label="Details" className="w-full text-sm" /> */}
+
+          <Button
+            name="delete-note-button"
+            label="Delete"
+            className="flex-1 p-1 text-sm border-none bg-rose-800 text-slate-200 hover:bg-rose-600 focus:bg-rose-600"
+            onClick={deleteNote}
+          />
+        </footer>
+      }
+    </article>
+  </Link>
 }
