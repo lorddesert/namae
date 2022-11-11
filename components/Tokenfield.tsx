@@ -34,7 +34,7 @@ export default function Tokenfield({ tags, setTags }: { tags: string[], setTags:
           name='add-tag-btn'
           label="Add ✖️"
           onClick={addTag}
-          className="h-full bg-zinc-800 border-zinc-800 hover:bg-zinc-700 hover:border-zinc-700 focus:bg-zinc-700 focus:border-zinc-700" 
+          className="h-full bg-zinc-800 border-zinc-800" 
         />
 
       </div>
