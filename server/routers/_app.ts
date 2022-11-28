@@ -31,8 +31,6 @@ export const appRouter = router({
       const { input: selectedTag } = req
       const notes = getNotesJSON()
 
-      console.log(selectedTag)
-
       const filteredNotes = notes.filter(note => note.tags.includes(selectedTag))
 
       return filteredNotes
