@@ -1,6 +1,11 @@
 import { trpc } from "../../utils/trpc"
 import { useRouter } from 'next/router'
+import Button from "../../components/Button"
+
+// Components
 import Tag from "../../components/Tag"
+import Link from 'next/link'
+
 export default function NoteById() {
   const router = useRouter()
   const { id } = router.query
@@ -15,23 +20,26 @@ export default function NoteById() {
   const { title, body, tags } = data
 
   return <>
-    <pre>
-      {
-        JSON.stringify(data)
-      }
-    </pre>
 
-    <article>
+    <article className="max-w-lg grid gap-4 p-2 bg-zinc-900 min-h-[250px] text-slate-200" style={{
+      gridTemplateRows: 'auto 1fr auto'
+    }}>
       <header>
-        <h1>{title}</h1>
-        <ul>
+      <Link href='/' >
+        <Button name="go back button" className="mb-2">
+          Go back
+        </Button>
+      </Link>
+        {/* We could change this to max-w-md */}
+        <h1 className="mb-2 text-xl ">{title}</h1>
+        <ul className="flex flex-wrap mt-2">
           {tags.map((tag, i) => <Tag key={`tag-${i}`} text={tag} />)}
         </ul>
       </header>
-      <main>
+      <main className="text-sm">
         {body}
       </main>
-      <footer>
+      <footer className="w-full bg-slate-900">
         Comentarios? :3
       </footer>
     </article>
