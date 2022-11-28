@@ -22,7 +22,7 @@ export function useGetNotes() {
   }, [data?.notes, isLoading, setNotes])
 
   const response: useGetNotesResponse = {
-    notes,
+    notes: notes.reverse(),
     isLoading
   }
 
